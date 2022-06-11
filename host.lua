@@ -4,27 +4,27 @@
 require 'lxsh'
 local parser = require "src.parser"
 local generate = require "src.generator"
+local host = {}
 
-local file = io.open(arg[1],"r")
-local src = file:read("*a")
-print(src)
-io.close(file)
+function host:lua(src)
+	local ast = parser.parse(src)
 
-local ast = parser.parse(src)
+	ast.navigateTree(nil,nil,false) -- run through the tree and inserts symbols / recovers from error 
+	ast.navigateTree(nil,nil,true) -- run through the tree again just to show modified tree.
 
-ast.navigateTree(nil,nil,false) -- run through the tree and inserts symbols / recovers from error 
-ast.navigateTree(nil,nil,true) -- run through the tree again just to show modified tree.
-
--- Semantic error (undeclared things)
-if next(ast.tree.errors) then
-	for _,e in pairs(ast.tree.errors) do
-		error(e.msg)
+	-- Semantic error (undeclared things)
+	if next(ast.tree.errors) then
+		for _,e in pairs(ast.tree.errors) do
+			error(e.msg)
+		end
 	end
+
+	local new_src = generate.code(ast.tree,true)
+	return new_src
 end
 
-local new_src = generate.code(ast.tree,true)
+function host:interpret(src)
+	loadstring(host:lua()) -- lol what did you expect me to do, I will add bytecode soon.
+end
 
---print(new_src)
-file = io.open("out.lua","w")
-file:write(new_src)
-io.close(file)
+return host
