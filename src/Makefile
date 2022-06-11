@@ -1,4 +1,4 @@
-# Makefile for building Lua
+# Makefile for building Delta
 # See ../doc/readme.html for installation and customization instructions.
 
 # == CHANGE THE SETTINGS BELOW TO SUIT YOUR ENVIRONMENT =======================
