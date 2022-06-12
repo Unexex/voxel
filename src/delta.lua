@@ -457,8 +457,15 @@ function JanitorModule.new()
 	return self
 end
 local dbs = {
-	Switch = getFunctions,
+	-- switch terms
+	Switch = switch,
+	Case = case,
+	Default = default,
+
+	-- pro tools
 	Wait = wait,
+
+	-- libraries
 	Mutex = mutex,
 	Hook = HooksModule,
 	Promise = PromiseModule,
