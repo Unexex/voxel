@@ -1,7 +1,5 @@
 -- This can run Delta scripts.
 
-
-require 'lxsh'
 local parser = require "src.parser"
 local generate = require "src.generator"
 local host = {}
