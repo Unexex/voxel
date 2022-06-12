@@ -1,12 +1,9 @@
 --[[
- Parser for Javascript source code.
- 
- Author: Etiene Dalcol, Eric Mourre and Gurvan Le Bleis
+ Parser
 ]]
 
 local parse = {}
 
-require 'lxsh'
 local util = require 'src.util'
 local ast = require 'src.ast'
 local js = require 'src.js_lexer'
