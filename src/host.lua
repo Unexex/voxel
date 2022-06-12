@@ -1,7 +1,6 @@
 -- This can run Delta scripts.
 
-local parser = require "src.parser"
-local generate = require "src.generator"
+local parser = require "src.delta" -- full library of terms.
 local host = {}
 
 function host:interpret(src)
