@@ -1,8 +1,8 @@
-# Delta
-Delta is a programming language with extended features made as a Lua VM.
+# Voxel 1
+Voxel is a programming language with extended features made as a Lua VM.
 
-## Why delta
-Delta can compile to multiple languages and can be used for anything, with its simple syntax and extended features compared to lua, c, c++.
+## Why vVxel
+Voxel can compile to multiple languages and can be used for anything, with its simple syntax and extended features compared to lua, c, c++.
 
 ## Credits
 - [ljs](https://github.com/mingodad/ljs) for some code.

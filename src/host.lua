@@ -1,6 +1,6 @@
--- This can run Delta scripts.
+-- This can run voxel scripts.
 
-local parser = require "src.delta" -- full library of terms.
+local parser = require "src.voxel" -- full library of terms.
 local host = {}
 
 function host:interpret(src)

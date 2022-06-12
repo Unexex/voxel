@@ -236,7 +236,7 @@ static int getboolfield (lua_State *L, const char *key) {
 #define L_MAXDATEFIELD	(INT_MAX / 2)
 #endif
 
-static int getfield (lua_State *L, const char *key, int d, int delta) {
+static int getfield (lua_State *L, const char *key, int d, int voxel) {
   int isnum;
   int t = lua_getfield(L, -1, key);  /* get field and its type */
   lua_Integer res = lua_tointegerx(L, -1, &isnum);
@@ -250,7 +250,7 @@ static int getfield (lua_State *L, const char *key, int d, int delta) {
   else {
     if (!(-L_MAXDATEFIELD <= res && res <= L_MAXDATEFIELD))
       return luaL_error(L, "field '%s' is out-of-bound", key);
-    res -= delta;
+    res -= voxel;
   }
   lua_pop(L, 1);
   return (int)res;
