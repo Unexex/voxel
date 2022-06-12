@@ -30,23 +30,6 @@ local function loadLibraries(src,path)
 	return add..src
 end
 
-function host.lang:lua(src, path)
-	src = loadLibraries(src, path)
-	local ast = parser.parse(src)
-
-	ast.navigateTree(nil,nil,false)
-	ast.navigateTree(nil,nil,true)
-
-	if next(ast.tree.errors) then
-		for _,e in pairs(ast.tree.errors) do
-			error(e.msg)
-		end
-	end
-
-	local new_src = generate.code(ast.tree,true)
-	return new_src
-end
-
 function host:interpret(src)
 	return loadstring(host.lang:lua(src, path))
 end
