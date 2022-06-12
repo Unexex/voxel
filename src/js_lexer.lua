@@ -1,9 +1,5 @@
 --[[
- Lexer for Javascript source code.
- 
- Author: Etiene Dalcol, Eric Mourre and Gurvan Le Bleis
-
- Based on C lexer by Peter Odding.
+ Lexer - coming soon.
 ]]
 
 local lxsh = require 'lxsh'
