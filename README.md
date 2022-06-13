@@ -1,7 +1,7 @@
 # Voxel 1
 Voxel is a programming language with extended features made as a Lua VM.
 
-## Why vVxel
+## Why Voxel
 Voxel can compile to multiple languages and can be used for anything, with its simple syntax and extended features compared to lua, c, c++.
 
 ## Credits
