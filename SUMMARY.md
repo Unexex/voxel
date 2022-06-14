@@ -1,10 +1,4 @@
 # Table of contents
 
-* [Welcome to Voxel!](README.md)
-* [Quick Start](quick-start.md)
-
-## Reference
-
-* [API Reference](reference/api-reference/README.md)
-  * [Pets](reference/api-reference/pets.md)
-  * [Users](reference/api-reference/users.md)
+* [Voxel 1](README.md)
+* [API documentation](api-documentation.md)

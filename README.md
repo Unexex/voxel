@@ -1,11 +1,23 @@
-# Welcome to Voxel!
+# Voxel 1
 
-Welcome to Voxel! Here you'll find all the documentation you need to get up and running with the Voxel API.
+## Welcome to Voxel 1.&#x20;
 
-## Want to jump right in?
+Voxel runs as a library for multiple languages. Each language uses the same API.
 
-Feeling like an eager beaver? Jump into the quick-start docs and get making your first request:
 
-## Want to deep dive?
 
-Dive a little deeper and start exploring our API reference to get an idea of everything that's possible with the API:
+### Downloading Voxel.
+
+Head over to [https://github.com/Unexex/voxel/tree/main/src](https://github.com/Unexex/voxel/tree/main/src), Find the file named \*-host.\*(Replace \* with your language). Make sure you also use [vm](https://github.com/Unexex/voxel/tree/main/src/vm) with the host.
+
+
+
+### Setting up
+
+Parent all the files you just downloaded in the same parent file as you did with your project.
+
+Import the host with a script and use that as an API.
+
+
+
+Read the API documentation to learn how to use the API
