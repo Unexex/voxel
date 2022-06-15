@@ -4,27 +4,41 @@
 
 ## Welcome to Voxel 1.&#x20;
 
-Voxel runs as a library for multiple languages. Each language uses the same API.
+Voxel is a superfast, simple language made for all purposes.
+
+This tutorial will guide you through compiling the files.
+
+
+
+**NOTE: The reader is expected to know how to compile Lua in this manual**
 
 
 
 ### Downloading Voxel.
 
-Head over to [https://github.com/Unexex/voxel/tree/main/src](https://github.com/Unexex/voxel/tree/main/src), Find the file named \*-host (Replace \* with your language). Make sure you also use [vm](https://github.com/Unexex/voxel/tree/main/src/vm) with the host.
+Head over to [https://github.com/Unexex/voxel/tree/main/src](https://github.com/Unexex/voxel/tree/main/src). Download vm, libraries and hosts.&#x20;
 
+With them downloaded parent them to a single folder.
 
+Call the folder "voxel"
+
+### Compiling
+
+To compile, find vm that you just downloaded. and compile vm as you would with Lua.
 
 ### Setting up
 
-Parent all the files you just downloaded in the same parent file as you did with your project.
+In hosts find the host with the same file extension as your script&#x20;
 
-Import the host with a script and use that as an API.
+{% hint style="info" %}
+host.cpp is made for the command line.
+{% endhint %}
+
+Use it as a library or compile it and you will be good to go.
 
 
 
-Read the API documentation to learn how to use the API
-
-
+Make sure to keep libraries still in you source.
 
 ### Credits
 
