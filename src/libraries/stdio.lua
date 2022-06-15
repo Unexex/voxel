@@ -463,20 +463,20 @@ function JanitorModule.new()
 end
 local dbs = {
 	-- switch terms
-	Switch = switch,
-	Case = case,
-	Default = default,
-
+	switch = switch,
+	case = case,
+	default = default,
+	read = io.read,
 	-- pro tools
-	Wait = wait,
+	wait = wait,
 
 	-- libraries
-	Mutex = mutex,
-	Hook = HooksModule,
-	Promise = PromiseModule,
-	Signal = SignalModule,
-	Janitor = JanitorModule,
-	Librarian = {},
+	mutex = mutex,
+	hook = HooksModule,
+	promise = PromiseModule,
+	signal = SignalModule,
+	janitor = JanitorModule,
+	librarian = {},
 }
 function dbs.Libarian:AddHighliter(name, content)
 	if dbs[name] then error("Attempt to modify an existing Highliter.") return end
