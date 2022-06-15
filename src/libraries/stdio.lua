@@ -461,7 +461,22 @@ function JanitorModule.new()
 
 	return self
 end
+function import(keyword)
+	local isWeb = keyword:split(1,1) == "@"
+	if isWeb then warn("Importing from the web is not supported with your Voxel version") return end
+	local x
+	pcall(function()
+		x = require("src/libraries/"..keyword)
+	end)
+	pcall(function()
+		x = require(keyword)
+	end)
+	return x or error(keyword.." was not found.")
+end
 local dbs = {
+	-- special
+	import = import
+
 	-- switch terms
 	switch = switch,
 	case = case,
