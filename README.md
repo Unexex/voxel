@@ -22,17 +22,13 @@ With them downloaded parent them to a single folder.
 
 Call the folder "voxel"
 
-### Compiling
-
-To compile, find vm that you just downloaded. and compile vm as you would with Lua.
-
 ### Setting up
 
-In hosts find the host with the same file extension as your script&#x20;
+**NOTE: host.cpp is made for the command line.**
 
-{% hint style="info" %}
-host.cpp is made for the command line.
-{% endhint %}
+****
+
+In hosts find the host with the same file extension as your script&#x20;
 
 Use it as a library or compile it and you will be good to go.
 
