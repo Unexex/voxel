@@ -1,4 +1,8 @@
 # Table of contents
 
-* [Voxel 1](README.md)
-* [API documentation](api-documentation.md)
+* [Intro](README.md)
+
+## Documentation
+
+* [API documentation](documentation/api-documentation.md)
+* [Command-line documentation](documentation/command-line-documentation.md)
