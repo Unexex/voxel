@@ -1,3 +1,7 @@
+---
+coverY: 0
+---
+
 # Command-line documentation
 
 ### Downloading the tool

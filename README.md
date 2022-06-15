@@ -1,3 +1,7 @@
+---
+coverY: 0
+---
+
 # Intro
 
 &#x20;[![image](https://user-images.githubusercontent.com/72946059/173466007-0a38e122-adc3-4e20-95cc-b79d8e8b2506.png) ![Download](props/link-download.svg)](https://github.com/unexex/voxel/releases)
