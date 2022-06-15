@@ -1,7 +1,8 @@
 --[[
-	system.lua, automatically gets added to the script.
+	stdio.lua, automatically gets added to the script.
 ]]
 -------------------------------------------------------------------------
+
 function wrap(f, ...)
 	local args = { ... }
 
@@ -478,7 +479,7 @@ local dbs = {
 	Librarian = {},
 }
 function dbs.Libarian:AddHighliter(name, content)
-	if dbs[name] then error("Attempt to modify an existing Highliter") return end
+	if dbs[name] then error("Attempt to modify an existing Highliter.") return end
 	dbs[name] = content
 end
 function dbs.Libarian:GetHighliters()
