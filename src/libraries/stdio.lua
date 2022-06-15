@@ -1,3 +1,7 @@
+--[[
+	system.lua, automatically gets added to the script.
+]]
+-------------------------------------------------------------------------
 function wrap(f, ...)
 	local args = { ... }
 
