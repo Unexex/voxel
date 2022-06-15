@@ -22,7 +22,7 @@ Call the folder "voxel"
 
 ### Setting up
 
-Now you need to build vm. Find the .bat file that corresponds to your device and run it.
+Now you need to build vm. Find the .bat file that corresponds to your device and run it. Then find the MakeFile in vm and run that. The new folder you found should be placed with your project file or host
 
 Find a file in hosts that is compatible with your script as a library. Import that as a library to use that. Read the API documentation to learn how to use that.
 
