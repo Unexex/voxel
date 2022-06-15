@@ -479,6 +479,7 @@ local dbs = {
 	janitor = JanitorModule,
 	librarian = {},
 }
+
 function dbs.Libarian:AddHighliter(name, content)
 	if dbs[name] then error("Attempt to modify an existing Highliter.") return end
 	dbs[name] = content
