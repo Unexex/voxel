@@ -8,7 +8,7 @@ Voxel runs as a library for multiple languages. Each language uses the same API.
 
 ### Downloading Voxel.
 
-Head over to [https://github.com/Unexex/voxel/tree/main/src](https://github.com/Unexex/voxel/tree/main/src), Find the file named \*-host.\*(Replace \* with your language). Make sure you also use [vm](https://github.com/Unexex/voxel/tree/main/src/vm) with the host.
+Head over to [https://github.com/Unexex/voxel/tree/main/src](https://github.com/Unexex/voxel/tree/main/src), Find the file named \*-host (Replace \* with your language). Make sure you also use [vm](https://github.com/Unexex/voxel/tree/main/src/vm) with the host.
 
 
 
