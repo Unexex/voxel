@@ -466,9 +466,10 @@ local dbs = {
 	switch = switch,
 	case = case,
 	default = default,
-	read = io.read,
+					
 	-- pro tools
 	wait = wait,
+	read = io.read,
 
 	-- libraries
 	mutex = mutex,
