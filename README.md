@@ -30,3 +30,8 @@ Find a file in hosts that is compatible with your script as a library. Import th
 
 * ljsjit - Original code, can be found [https://github.com/mingodad/ljsjit](https://github.com/mingodad/ljsjit)
 * Luajit - Just In Time system, can be found [http://luajit.org](http://luajit.org)
+* Sha2 for sha2 library [https://github.com/Egor-Skriptunoff/pure\_lua\_SHA](https://github.com/Egor-Skriptunoff/pure\_lua\_SHA)
+* [https://github.com/rxi/json.lua](https://github.com/rxi/json.lua) for json library
+* A bunch of [https://github.com/euclidianAce/luaLibraries](https://github.com/euclidianAce/luaLibraries) libraries
+* host.py uses [https://github.com/marteinn/Lua-To-Python](https://github.com/marteinn/Lua-To-Python)
+* host.swift uses [https://github.com/mpobrien/swift-lua/blob/master/main.swift ](https://github.com/mpobrien/swift-lua/blob/master/main.swift)
