@@ -21,3 +21,10 @@ Import the host with a script and use that as an API.
 
 
 Read the API documentation to learn how to use the API
+
+
+
+### Credits
+
+* ljsjit - Original code, can be found [https://github.com/mingodad/ljsjit](https://github.com/mingodad/ljsjit)
+* Luajit - Just In Time system, can be found [http://luajit.org](http://luajit.org)
