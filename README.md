@@ -18,6 +18,8 @@ Call the folder "voxel"
 
 ### Setting up
 
+Now you need to build vm. Find the .bat file that corresponds to your device and run it.
+
 Find a file in hosts that is compatible with your script as a library. Import that as a library to use that. Read the API documentation to learn how to use that.
 
 ### Credits
