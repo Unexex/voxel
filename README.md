@@ -1,6 +1,7 @@
 # Intro
 
-![Docs](props/link-docs.svg)[![image](https://user-images.githubusercontent.com/72946059/173466007-0a38e122-adc3-4e20-95cc-b79d8e8b2506.png) ![Download](props/link-download.svg)](https://github.com/unexex/design-plus/releases)
+[![Download](props/link-docs.svg)]([https://github.com/unexex/voxel/releases](https://blox-1.gitbook.io/voxel)) 
+[![image](https://user-images.githubusercontent.com/72946059/173466007-0a38e122-adc3-4e20-95cc-b79d8e8b2506.png) ![Download](props/link-download.svg)](https://github.com/unexex/voxel/releases)
 
 ## Welcome to Voxel 1.&#x20;
 
