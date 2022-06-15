@@ -35,3 +35,5 @@ Find a file in hosts that is compatible with your script as a library. Import th
 * A bunch of [https://github.com/euclidianAce/luaLibraries](https://github.com/euclidianAce/luaLibraries) libraries
 * host.py uses [https://github.com/marteinn/Lua-To-Python](https://github.com/marteinn/Lua-To-Python)
 * host.swift uses [https://github.com/mpobrien/swift-lua/blob/master/main.swift ](https://github.com/mpobrien/swift-lua/blob/master/main.swift)
+* [A whole bunch of 4x8Matrix's modules](https://github.com/4x8Matrix/LuaModules/)
+* [LuaSwitch](https://github.com/TheHackerPuppy/LuaSwitch) for switch implementation
