@@ -6,11 +6,9 @@
 
 Voxel is a superfast, simple language made for all purposes.
 
-This tutorial will guide you through compiling the files.
+This tutorial will guide you through getting Voxel running.
 
 
-
-**NOTE: The reader is expected to know how to compile Lua in this manual**
 
 
 
@@ -24,17 +22,7 @@ Call the folder "voxel"
 
 ### Setting up
 
-**NOTE: host.cpp is made for the command line.**
-
-****
-
-In hosts find the host with the same file extension as your script&#x20;
-
-Use it as a library or compile it and you will be good to go.
-
-
-
-Make sure to keep libraries still in you source.
+Find a file in hosts that is compatible with your script as a library. Import that as a library to use that. Read the API documentation to learn how to use that.
 
 ### Credits
 
