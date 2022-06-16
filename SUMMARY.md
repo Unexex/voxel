@@ -9,4 +9,4 @@
 
 ## 👨💻 Programming
 
-* [Syntax](programming/syntax.md)
+* [Introduction](programming/introduction.md)
