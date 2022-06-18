@@ -2,9 +2,6 @@
 	stdio.lua, automatically gets added to the script.
 ]]
 -------------------------------------------------------------------------
-
---Hello, Im putting this here in case bots reupload this module with a virus in it. Im PerfectlySquared, the original creator of this module. If you find any module that has the same asset under a different creator that is not me.
-
 -- Functions
 function split(t)
 	table.sort(t,function(a,b)
