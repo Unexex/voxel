@@ -69,6 +69,19 @@ math and amath are completely different. math goes for speed and amath goes for 
 | <p><strong>amath.fromPercent(x, y)</strong><br>Converts notation (y is decimal place to round to (<strong>OPTIONAL</strong>), Defaulted to 15)</p> |   |   |
 | <p><strong>amath.toFraction(x, y)</strong><br>Converts notation (y is Mixed Number Toggle (<strong>OPTIONAL</strong>) || Defaulted to false)</p>   |   |   |
 | <p><strong>amath.fromFraction(x, y)</strong><br>Converts notation (y is Mixed Number Toggle (<strong>OPTIONAL</strong>) || Defaulted to false)</p> |   |   |
-| <p><strong>math.toTime(x, y)</strong><br>Converts notation (y is AM/PM Toggle (<strong>OPTIONAL</strong>) || Defaulted to false)</p>               |   |   |
-| <p><strong>math.fromTime(x, y)</strong><br>Converts notation (y is AM/PM Toggle (<strong>OPTIONAL</strong>) || Defaulted to false)</p>             |   |   |
-|                                                                                                                                                    |   |   |
+| <p><strong>amath.toTime(x, y)</strong><br>Converts notation (y is AM/PM Toggle (<strong>OPTIONAL</strong>) || Defaulted to false)</p>              |   |   |
+| <p><strong>amath.fromTime(x, y)</strong><br>Converts notation (y is AM/PM Toggle (<strong>OPTIONAL</strong>) || Defaulted to false)</p>            |   |   |
+| **amath.e**                                                                                                                                        |   |   |
+| **amath.pi**                                                                                                                                       |   |   |
+| **amath.tau**                                                                                                                                      |   |   |
+| **amath.phi**                                                                                                                                      |   |   |
+| <p><strong>amath.toBase(x, y, z)</strong><br>Converts arguments</p>                                                                                |   |   |
+| <p><strong>amath.toFahrenheit(x)</strong><br>Converts Celsius to Fahrenheit</p>                                                                    |   |   |
+| <p><strong>amath.toCelsius(x)</strong><br>Converts Fahrenheit to Celsius</p>                                                                       |   |   |
+| <p><strong>amath.vertex(a, b, c)</strong><br><strong></strong>Calculates the vertex of a parabola</p>                                              |   |   |
+| <p><strong>amath.solver(a: function)</strong><br><strong></strong>Finds the zeros of any equation</p>                                              |   |   |
+| <p><strong>amath.digitadd(a)</strong><br><strong></strong>combine the digits of a number</p>                                                       |   |   |
+| <p><strong>amath.digitmultiply(a)</strong><br><strong></strong>multiply the digits of a number</p>                                                 |   |   |
+| <p><strong>amath.digitreverse(a)</strong><br><strong></strong>reverse the digits of a number</p>                                                   |   |   |
+
+Calculus, and Miscellaneous functions have not been added yet as they are still in the beta release.
