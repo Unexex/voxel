@@ -1,5 +1,5 @@
 /*
-** LuaJIT VM builder: PE object emitter.
+** Voxel VM builder: PE object emitter.
 ** Copyright (C) 2005-2020 Mike Pall. See Copyright Notice in luajit.h
 **
 ** Only used for building on Windows, since we cannot assume the presence

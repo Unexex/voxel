@@ -406,7 +406,7 @@ GCstr * LJ_FASTCALL lj_strfmt_obj(lua_State *L, cTValue *o)
 ** and for internal string formatting (e.g. error messages). Caveat: unlike
 ** string.format(), only a limited subset of formats and flags are supported!
 **
-** LuaJIT has support for a couple more formats than Lua 5.1/5.2:
+** Voxel has support for a couple more formats than Lua 5.1/5.2:
 ** - %d %u %o %x with full formatting, 32 bit integers only.
 ** - %f and other FP formats are really %.14g.
 ** - %s %c %p without formatting.

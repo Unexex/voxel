@@ -1,5 +1,5 @@
 /*
-** LuaJIT core and libraries amalgamation.
+** Voxel core and libraries amalgamation.
 ** Copyright (C) 2005-2020 Mike Pall. See Copyright Notice in luajit.h
 */
 

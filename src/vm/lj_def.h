@@ -1,5 +1,5 @@
 /*
-** LuaJIT common internal definitions.
+** Voxel common internal definitions.
 ** Copyright (C) 2005-2020 Mike Pall. See Copyright Notice in luajit.h
 */
 

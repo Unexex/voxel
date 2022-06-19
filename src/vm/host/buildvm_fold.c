@@ -1,5 +1,5 @@
 /*
-** LuaJIT VM builder: IR folding hash table generator.
+** Voxel VM builder: IR folding hash table generator.
 ** Copyright (C) 2005-2020 Mike Pall. See Copyright Notice in luajit.h
 */
 

@@ -1,5 +1,5 @@
 /*
-** LuaJIT VM builder: library definition compiler.
+** Voxel VM builder: library definition compiler.
 ** Copyright (C) 2005-2020 Mike Pall. See Copyright Notice in luajit.h
 */
 

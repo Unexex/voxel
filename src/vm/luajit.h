@@ -1,5 +1,5 @@
 /*
-** LuaJIT -- a Just-In-Time Compiler for Lua. http://luajit.org/
+** Voxel -- a Just-In-Time Compiler for Lua. http://luajit.org/
 **
 ** Copyright (C) 2005-2020 Mike Pall. All rights reserved.
 **

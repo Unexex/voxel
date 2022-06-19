@@ -1,5 +1,5 @@
 /*
-** LuaJIT VM builder: Assembler source code emitter.
+** Voxel VM builder: Assembler source code emitter.
 ** Copyright (C) 2005-2020 Mike Pall. See Copyright Notice in luajit.h
 */
 

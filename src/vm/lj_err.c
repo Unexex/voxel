@@ -19,7 +19,7 @@
 #include "lj_strfmt.h"
 
 /*
-** LuaJIT can either use internal or external frame unwinding:
+** Voxel can either use internal or external frame unwinding:
 **
 ** - Internal frame unwinding (INT) is free-standing and doesn't require
 **   any OS or library support.

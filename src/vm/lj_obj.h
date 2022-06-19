@@ -1,5 +1,5 @@
 /*
-** LuaJIT VM tags, values and objects.
+** Voxel VM tags, values and objects.
 ** Copyright (C) 2005-2020 Mike Pall. See Copyright Notice in luajit.h
 **
 ** Portions taken verbatim or adapted from the Lua interpreter.
