@@ -1,4 +1,3 @@
-local math = require("math")
 
 local colors = {
 

@@ -1,6 +1,5 @@
 --A simple (unfinished) quaternion library
 
-local math = require("math")
 
 local labels = {"re", "i", "j", "k"}
 local function quatIterator(a, b)
