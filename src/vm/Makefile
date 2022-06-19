@@ -392,7 +392,7 @@ ifeq (,$(HOST_LUA))
 endif
 
 DASM_DIR= ../dynasm
-DASM= $(HOST_LUA) $(DASM_DIR)/dynasm.ljs
+DASM= $(HOST_LUA) $(DASM_DIR)/dynasm.vox
 DASM_XFLAGS=
 DASM_AFLAGS=
 DASM_ARCH= $(TARGET_LJARCH)
@@ -504,7 +504,7 @@ LJCORE_O= lj_gc.o lj_err.o lj_char.o lj_bc.o lj_obj.o lj_buf.o \
 LJVMCORE_O= $(LJVM_O) $(LJCORE_O)
 LJVMCORE_DYNO= $(LJVMCORE_O:.o=_dyn.o)
 
-LIB_VMDEF= jit/vmdef.ljs
+LIB_VMDEF= jit/vmdef.vox
 LIB_VMDEFP= $(LIB_VMDEF)
 
 LUAJIT_O= luajit.o
@@ -613,7 +613,7 @@ clean:
 	$(HOST_RM) $(ALL_RM)
 
 libbc:
-	./$(LUAJIT_T) host/genlibbc.ljs -o host/buildvm_libbc.h $(LJLIB_C)
+	./$(LUAJIT_T) host/genlibbc.vox -o host/buildvm_libbc.h $(LJLIB_C)
 	$(MAKE) all
 
 depend:
@@ -640,7 +640,7 @@ $(MINILUA_T): $(MINILUA_O)
 	$(E) "HOSTLINK  $@"
 	$(Q)$(HOST_CC) $(HOST_ALDFLAGS) -o $@ $(MINILUA_O) $(MINILUA_LIBS) $(HOST_ALIBS)
 
-host/buildvm_arch.h: $(DASM_DASC) $(DASM_DEP) $(DASM_DIR)/*.ljs
+host/buildvm_arch.h: $(DASM_DASC) $(DASM_DEP) $(DASM_DIR)/*.vox
 	$(E) "DYNASM    $@"
 	$(Q)$(DASM) $(DASM_FLAGS) -o $@ $(DASM_DASC)
 

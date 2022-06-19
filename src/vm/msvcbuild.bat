@@ -20,7 +20,7 @@
 @set LJMT=mt /nologo
 @set LJLIB=lib /nologo /nodefaultlib
 @set DASMDIR=..\dynasm
-@set DASM=%DASMDIR%\dynasm.ljs
+@set DASM=%DASMDIR%\dynasm.vox
 @set DASC=vm_x64.dasc
 @set LJDLLNAME=lua51.dll
 @set LJLIBNAME=lua51.lib
@@ -68,7 +68,7 @@ buildvm -m libdef -o lj_libdef.h %ALL_LIB%
 @if errorlevel 1 goto :BAD
 buildvm -m recdef -o lj_recdef.h %ALL_LIB%
 @if errorlevel 1 goto :BAD
-buildvm -m vmdef -o jit\vmdef.ljs %ALL_LIB%
+buildvm -m vmdef -o jit\vmdef.vox %ALL_LIB%
 @if errorlevel 1 goto :BAD
 buildvm -m folddef -o lj_folddef.h lj_opt_fold.c
 @if errorlevel 1 goto :BAD
