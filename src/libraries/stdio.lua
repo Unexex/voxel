@@ -52,12 +52,14 @@ function math2.sd(x,PopulationToggle)
 	if PopulationToggle == nil then PopulationToggle = false end
 	local s = 0
 	local ss = pcall(function()
-		for i,v in pairs(x) do s += v end
+		for i,v in pairs(x) do 
+			s = s+v 
+		end
 	end)
 	if not s then return warn("Make sure all values in the table are numbers") end 
 	local avg = s/#x
 	local t = 0
-	for i,v in pairs(x) do t += (v - avg)^2 end
+	for i,v in pairs(x) do t = t+((v - avg)^2) end
 	if not PopulationToggle then
 		return math.sqrt(t/(#x-1))
 	else
@@ -161,7 +163,7 @@ function math2.mode(x)
 	local s = pcall(function()
 		for i,v in pairs(x) do
 			if mostFrequent[tostring(v)] ~= nil then
-				mostFrequent[tostring(v)] += 1
+				mostFrequent[tostring(v)] = mostFrequent[tostring(v)]+1
 			else
 				mostFrequent[tostring(v)] = 1
 			end
@@ -188,14 +190,14 @@ function math2.mad(x)
 	local avg = 0
 	local s = pcall(function()
 		for i,v in pairs(x) do
-			avg += v/#x
+			avg = avg+(v/#x)
 		end
 	end)
 	
 	if not s then return warn("Make sure all values in the table are numbers") end
 	local s = 0
 	for i=1,#x do
-		s += math.abs(x[i]-avg)
+		s = s+math.abs(x[i]-avg)
 	end
 	return s/#x
 end
@@ -206,7 +208,7 @@ function math2.avg(x)
 	
 	local s = pcall(function()
 		for i,v in pairs(x) do
-			avg += v/#x
+			avg = avg+(v/#x)
 		end
 	end)
 	if not s then return warn("Make sure all values in the table are numbers") end
@@ -331,7 +333,7 @@ function math2.digitadd(x)
 	local t = string.split(x,'')
 	local s = 0
 	for i,v in pairs(t) do
-		s += v
+		s = s+v
 	end
 	return s
 end
@@ -342,7 +344,7 @@ function math2.digitmul(x)
 	local t = string.split(x,'')
 	local s = 0
 	for i,v in pairs(t) do
-		s *= v
+		s = s*v
 	end
 	return s
 end
@@ -369,9 +371,9 @@ function math2.toComma(x)
 	local digits = math.floor(math.log10(x))+1
 	for i,v in pairs(nums) do
 		if (digits-i)%3 == 0 and digits-i ~= 0 then
-			num ..= v..','
+			num = num..v..','
 		else
-			num ..= v
+			num = num..v
 		end
 	end
 	if neg then return '-'..num end 
@@ -455,7 +457,7 @@ function math2.toNumeral(x)
 				local int = v[1]
 				while x >= int do
 					roman = roman..romanChar
-					x -= int
+					x = x-int
 				end
 			end
 		end
@@ -487,14 +489,14 @@ function math2.fromNumeral(x)
 		local Z1 = numberMap[string.sub(x, num, num)]
 		local Z2 = numberMap[string.sub(x, num + 1, num + 1)]
 		if Z1 < Z2 then
-			decimal += (Z2 - Z1)
-			num += 2
+			decimal = decimal + (Z2 - Z1)
+			num = num + 2
 		else
-			decimal += Z1
-			num += 1
+			decimal = decimal + Z1
+			num = num + 1
 		end
 	end
-	if num <= numeralLength then decimal += numberMap[string.sub(x, num, num)] end
+	if num <= numeralLength then decimal = decimal+numberMap[string.sub(x, num, num)] end
 	return decimal
 end
 
@@ -645,7 +647,7 @@ function math2.toBase(x,Base,CurrentBase)--Number,BaseToConvert,CurrentBase
 		end
 		local sum = 0
 		for i,v in pairs(nums) do
-			sum += (v*(b1^(#nums-i)))
+			sum = sum + (v*(b1^(#nums-i)))
 		end
 		return sum
 	end
@@ -755,7 +757,7 @@ function math2.integral(Lower,Upper,Function)
 		Upper=math.abs(Upper)
 	end
 	for i=Lower,Upper,1e-5 do
-		s += Function(i)*1e-5
+		s = s+ (Function(i)*1e-5)
 	end
 	if n then return -s else return s end
 end
@@ -777,7 +779,7 @@ function math2.summation(Start,Finish,Function)
 	if type(Function) ~= 'function' then return warn("Make sure parameter 3 is a function") end 
 	local sum = 0
 	for i=Start,Finish do
-		sum += Function(i)
+		sum = sum+Function(i)
 	end
 	return sum
 end
@@ -788,7 +790,7 @@ function math2.product(Start,Finish,Function)
 	if type(Function) ~= 'function' then return warn("Make sure parameter 3 is a function") end 
 	local sum = 0
 	for i=Start,Finish do
-		sum *= Function(i)
+		sum = sum*Function(i)
 	end
 	return sum
 end
@@ -833,7 +835,6 @@ local function run(case, cases)
 			return 
 		elseif it.sentence_type == "case" and it.condition == case then
 			it.case(stop)
-			continue
 		end
 
 		default = it.case
@@ -1260,18 +1261,7 @@ function JanitorModule.new()
 
 	return self
 end
-function import(keyword)
-	local isWeb = keyword:split(1,1) == "@"
-	if isWeb then warn("Importing from the web is not supported with your Voxel version") return end
-	local x
-	pcall(function()
-		x = require("src/libraries/"..keyword)
-	end)
-	pcall(function()
-		x = require(keyword)
-	end)
-	return x or error(keyword.." was not found.")
-end
+
 
 
 local args = {}
@@ -1634,10 +1624,79 @@ end
 
 
 
+local colors = {
+
+	redHSV = {0, 1, 1},
+	greenHSV = {120, 1, 1},
+	blueHSV = {240, 1, 1},
+	purpleHSV = {300, 1, 1},
+
+	HSVtoRGB = function(c)
+		 local H, S, V = table.unpack(c)
+		 
+		 local C = V * S
+		 local X = C * ( 1 - math.abs( ( H / 60 )  % 2 - 1 ) )
+		 m = V - C
+		 
+		 local rP, gP, bP
+		 if 0 <= H and H < 60 then
+			  rP, gP, bP = C, X, 0
+		 elseif 60 <= H and H < 120 then
+			  rP, gP, bP = X, C, 0
+		 elseif 120 <= H and H < 180 then
+			  rP, gP, bP = 0, C, X
+		 elseif 180 <= H and H < 240 then
+			  rP, gP, bP = 0, X, C
+		 elseif 240 <= H and H < 300 then
+			  rP, gP, bP = X, 0, C
+		 elseif 300 <= H and H < 360 then
+			  rP, gP, bP = C, 0, X
+		 end
+		 local r, g, b
+		 r = (rP + m)
+		 g = (gP + m)
+		 b = (bP + m)
+		 
+		 return r, g, b
+	end,
+	
+	RGBtoHSV = function(c)
+		 local R, G, B = table.unpack(c)
+		 
+		 local H, S, V = 0, 0, 0
+		 
+		 local M, m = math.max(R, G, B), math.min(R, G, B)
+		 if M == R then
+			  H = 60 * (G - B)/(M - m)
+		 elseif M == G then
+			  H = 60 * (2 + (B - R)/(M - m) )
+		 elseif M == B then
+			  H = 60 * (4 + (R - G)/(M - m) )
+		 end
+		 H = H % 360
+		 
+		 if not M == 0 then
+			  S = (M - m)/M
+		 end
+		 
+		 V = M
+		 
+		 return H, S, V
+	end,
+
+	lerp = function(a, b, t)
+		 local c = {}
+		 for i = 1, #a do
+			  table.insert(c, a[i] * t + b[i] * (1 - t))
+		 end
+		 return c
+	end,
+
+}
 
 local dbs = {
 	-- special
-	import = import,
+	import = function() end,
 
 	-- switch terms
 	switch = switch,
@@ -1649,7 +1708,8 @@ local dbs = {
 	read = io.read,
 	arguments = args,
 	array = array,
-	admath = math2,
+	amath = math2,
+	color3 = colors,
 
 	-- libraries
 	mutex = mutex,
@@ -1671,10 +1731,30 @@ function dbs.librarian:GetHighliters()
 	end
 	return dsxs
 end			
+
+function import(keyword)
+	local isWeb = keyword:split(1,1) == "@"
+	if isWeb then warn("Importing from the web is not supported with your Voxel version") return end
+	local x
+	pcall(function()
+		x = require("src/libraries/"..keyword)
+	end)
+	pcall(function()
+		x = require(keyword)
+	end)
+	local value = x or error(keyword.." was not found.")
+	if not value return end
+
+
+	dbs.librarian:AddHighliter(keyword, value) -- adds it so that you can run:
+	-- import "x" -- 
+	-- rather than --
+	-- local x = import "x" --
+end
+
+dbs.import = import
+
+
 return dbs
-
-
-
-
 
 -- @coolpro200021 ---
