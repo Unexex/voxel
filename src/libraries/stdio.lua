@@ -3,8 +3,7 @@
 ]]
 -------------------------------------------------------------------------
 -- Functions
-local 	_type, setmetatable, getmetatable, select, ipairs, pairs,  tostring, error, assert, print, unpack, fmt = 
-		type, setmetatable, getmetatable, select, ipairs, pairs, tostring, error, assert, print, table.unpack, string.format
+local 	_type, setmetatable, getmetatable, select, ipairs, pairs,  tostring, error, assert, print, unpack, fmt = type, setmetatable, getmetatable, select, ipairs, pairs, tostring, error, assert, print, table.unpack, string.format
 
 -- print(("%s %s %s"):match("%%"))
 
@@ -38,7 +37,7 @@ local type = setmetatable({}, {
 local function normalize_to_type(...)
 
 	if select("#", ...) ~= 0 then
-		return type((...), "type") and (...) or type.get((...)), normalize_to_type(select(2,...))
+		return _type((...), "type") and (...) or type.get((...)), normalize_to_type(select(2,...))
 	else
 		return nil
 	end
@@ -216,7 +215,7 @@ end
 
 -- Does not return true for equality. Only less than.
 local function assert_type(o)
-	if not type(o, "type") then
+	if not _type(o, "type") then
 		error(fmt("Error: expected 'type' and received %s", type.tostring(o)),2)
 	else
 		return o
@@ -617,7 +616,7 @@ local function geometry_beautifier(
          -- we have no control over width and height of the terminal window, but we assume
          -- that terminal window has exactly 80 columns and at least 23 rows (this is very probable)
          max_width  = 80
-         max_height = type(exact_geometry_is_unknown) == "number" and exact_geometry_is_unknown or 23
+         max_height = _type(exact_geometry_is_unknown) == "number" and exact_geometry_is_unknown or 23
       end
       local pos, left_cut, right_cut = 0, math.huge, 0
       local line_no, top_cut, bottom_cut = 0, math.huge, 0
@@ -1245,7 +1244,7 @@ end  -- end of function "create_function_alert()"
 local function result(x)
    -- argument may be nil, a string or a function returning a string
    -- retuned value is nil or a string
-   if type(x) == "function" then return x() else return x end
+   if _type(x) == "function" then return x() else return x end
 end
 
 local function create_new_instance_of_function_alert(old_config, config_update)  -- factory of lazy wrapper for alert()
@@ -1261,14 +1260,14 @@ local function create_new_instance_of_function_alert(old_config, config_update) 
    return
       function(...)
          local arg1, cfg_update = ...
-         if arg1 == nil and type(cfg_update) == "table" then  -- special form of invocation (user wants to create a function)
+         if arg1 == nil and _type(cfg_update) == "table" then  -- special form of invocation (user wants to create a function)
             -- create new instance of function with modified configuration
             return create_new_instance_of_function_alert(cfg, cfg_update)
          else                                           -- usual form of invocation (user wants to create a window with text)
             -- create alert window
             alert = alert or create_function_alert(cfg)   -- here alert() is actually gets created (deferred/"lazy" creation)
             local text, title, colors, wait, admit_linebreak_inside_of_a_word = ...
-            if type(text) == "table" then  -- handle invocation with named arguments
+            if _type(text) == "table" then  -- handle invocation with named arguments
                text, title, colors, wait, admit_linebreak_inside_of_a_word =
                   text.text, text.title, text.colors, text.wait, text.admit_linebreak_inside_of_a_word
             end
@@ -1330,13 +1329,13 @@ local math2 = {}
 -- Statistics/Chance
 
 function math2.flip(x) -- x is a number from 0-1
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number from 0 to 1") end
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number from 0 to 1") end
 	return Random.new():NextNumber() < x
 end
 
 function math2.sd(x,PopulationToggle)
-	if type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
-	if type(PopulationToggle) ~= 'boolean' and PopulationToggle ~= nil then return warn("Make sure parameter 2 is set to nil or a boolean") end
+	if _type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
+	if _type(PopulationToggle) ~= 'boolean' and PopulationToggle ~= nil then return warn("Make sure parameter 2 is set to nil or a boolean") end
 	if PopulationToggle == nil then PopulationToggle = false end
 	local s = 0
 	local ss = pcall(function()
@@ -1358,7 +1357,7 @@ end
 
 
 function math2.min(x) 
-	if type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
+	if _type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
 	local s = pcall(function()
 		table.sort(x,function(a,b)
 			return a < b
@@ -1369,7 +1368,7 @@ function math2.min(x)
 end
 
 function math2.median(x) 
-	if type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
+	if _type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
 	local s = pcall(function()
 		table.sort(x,function(a,b)
 			return a < b
@@ -1387,7 +1386,7 @@ function math2.median(x)
 end
 
 function math2.q1(x)
-	if type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
+	if _type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
 	local s = pcall(function()
 		table.sort(x,function(a,b)
 			return a < b
@@ -1401,7 +1400,7 @@ end
 
 
 function math2.q3(x)
-	if type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
+	if _type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
 	local s = pcall(function()
 		table.sort(x,function(a,b)
 			return a < b
@@ -1413,7 +1412,7 @@ function math2.q3(x)
 	return math2.median(t)
 end
 function math2.max(x) 
-	if type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
+	if _type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
 	local s = pcall(function()
 		table.sort(x,function(a,b)
 			return a > b
@@ -1424,7 +1423,7 @@ function math2.max(x)
 end
 
 function math2.iqr(x)
-	if type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
+	if _type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
 	local s = pcall(function()
 		table.sort(x,function(a,b)
 			return a < b
@@ -1435,7 +1434,7 @@ function math2.iqr(x)
 end
 
 function math2.range(x)
-	if type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
+	if _type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
 	local s = pcall(function()
 		table.sort(x,function(a,b)
 			return a < b
@@ -1446,7 +1445,7 @@ function math2.range(x)
 end
 
 function math2.mode(x)
-	if type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
+	if _type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
 	local mostFrequent = {}
 	local s = pcall(function()
 		for i,v in pairs(x) do
@@ -1474,7 +1473,7 @@ function math2.mode(x)
 end
 
 function math2.mad(x)
-	if type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
+	if _type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
 	local avg = 0
 	local s = pcall(function()
 		for i,v in pairs(x) do
@@ -1491,7 +1490,7 @@ function math2.mad(x)
 end
 
 function math2.avg(x)
-	if type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
+	if _type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
 	local avg = 0
 	
 	local s = pcall(function()
@@ -1505,8 +1504,8 @@ end
 
 function math2.zscore(x,PopulationToggle)
 	if PopulationToggle == nil then PopulationToggle = false end
-	if type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
-	if type(PopulationToggle) ~= 'boolean' and PopulationToggle ~= nil then return warn("Make sure parameter 2 is set to nil or a boolean") end
+	if _type(x) ~= 'table' then return warn("Make sure parameter 1 is a table") end
+	if _type(PopulationToggle) ~= 'boolean' and PopulationToggle ~= nil then return warn("Make sure parameter 2 is set to nil or a boolean") end
 	
 	local newt = {}
 	local sd = math2.sd(x,PopulationToggle)
@@ -1520,9 +1519,9 @@ end
 -- Miscellaneous
 
 function math2.gcd(a,b)
-	if type(a) ~= 'number' and type(b) ~= 'number' then return warn("Make sure parameter 1 and 2 are both numbers") end 
-	if type(a) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
-	if type(b) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
+	if _type(a) ~= 'number' and _type(b) ~= 'number' then return warn("Make sure parameter 1 and 2 are both numbers") end 
+	if _type(a) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(b) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
 	a = math.min(a,b)
 	b = math.max(a,b)
 	local q = math.floor(b/a)
@@ -1532,38 +1531,38 @@ function math2.gcd(a,b)
 end
 
 function math2.lcm(a,b)
-	if type(a) ~= 'number' and type(b) ~= 'number' then return warn("Make sure parameter 1 and 2 are both numbers") end 
-	if type(a) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
-	if type(b) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
+	if _type(a) ~= 'number' and _type(b) ~= 'number' then return warn("Make sure parameter 1 and 2 are both numbers") end 
+	if _type(a) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(b) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
 	return math.abs(a*b)/math2.gcd(a,b)
 end
 
 function math2.floor(x,NearestDecimal)
 	if NearestDecimal == nil then NearestDecimal = 0 end
-	if type(x) ~= 'number' and type(NearestDecimal) ~= 'number' then return warn("Make sure parameter 1 and 2 are both numbers") end 
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
-	if type(NearestDecimal) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
+	if _type(x) ~= 'number' and _type(NearestDecimal) ~= 'number' then return warn("Make sure parameter 1 and 2 are both numbers") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(NearestDecimal) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
 	return math.floor(x*10^NearestDecimal)/10^NearestDecimal
 end
 
 function math2.round(x,NearestDecimal)
 	if NearestDecimal == nil then NearestDecimal = 0 end
-	if type(x) ~= 'number' and type(NearestDecimal) ~= 'number' then return warn("Make sure parameter 1 and 2 are both numbers") end 
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
-	if type(NearestDecimal) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
+	if _type(x) ~= 'number' and _type(NearestDecimal) ~= 'number' then return warn("Make sure parameter 1 and 2 are both numbers") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(NearestDecimal) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
 	return math.round(x*10^NearestDecimal)/10^NearestDecimal
 end
 
 function math2.ceil(x,NearestDecimal)
 	if NearestDecimal == nil then NearestDecimal = 0 end
-	if type(x) ~= 'number' and type(NearestDecimal) ~= 'number' then return warn("Make sure parameter 1 and 2 are both numbers") end 
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
-	if type(NearestDecimal) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
+	if _type(x) ~= 'number' and _type(NearestDecimal) ~= 'number' then return warn("Make sure parameter 1 and 2 are both numbers") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(NearestDecimal) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
 	return math.ceil(x*10^NearestDecimal)/10^NearestDecimal
 end
 
 function math2.factors(x)
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
 	local t = {}
 	for i=1,x^.5 do
 		if x%i == 0 then
@@ -1579,10 +1578,10 @@ end
 
 function math2.iteration(Input,Iterations,Func)
 
-	if type(Index) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
-	if type(Iterations) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
+	if _type(Index) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(Iterations) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
 	if Iterations%1 ~= 0 then return warn("Make sure parameter 2 is an integer") end 
-	if type(Func) ~= 'function' then return warn("Make sure parameter 3 is a function") end 
+	if _type(Func) ~= 'function' then return warn("Make sure parameter 3 is a function") end 
 
 	local new = Input
 	for i=1,Iterations do
@@ -1593,20 +1592,20 @@ end
 
 function math2.nthroot(x,Index)
 
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
-	if type(Index) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(Index) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
 
 	return x^(1/Index)
 end
 
 function math2.fibonacci(x)
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
 	if x%1 ~= 0 then return warn("Make sure parameter 1 is an integer") end 
 	return math.round((((1+math.sqrt(5))/2)^x-((1-math.sqrt(5))/2)^x)/math.sqrt(5))
 end
 
 function math2.lucas(x)
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
 	if x%1 ~= 0 then return warn("Make sure parameter 1 is an integer") end 
 	return math.round((((1+math.sqrt(5))/2)^x-((1-math.sqrt(5))/2)^x)/math.sqrt(5)+(((1+math.sqrt(5))/2)^(x-2)-((1-math.sqrt(5))/2)^(x-2))/math.sqrt(5))
 end
@@ -1615,7 +1614,7 @@ end
 -- Useless
 
 function math2.digitadd(x)
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
 	if x%1 ~= 0 then return warn("Make sure parameter 1 is an integer") end 
 	
 	local t = string.split(x,'')
@@ -1627,7 +1626,7 @@ function math2.digitadd(x)
 end
 
 function math2.digitmul(x)
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
 	if x%1 ~= 0 then return warn("Make sure parameter 1 is an integer") end 
 	local t = string.split(x,'')
 	local s = 0
@@ -1638,7 +1637,7 @@ function math2.digitmul(x)
 end
 
 function math2.digitrev(x)
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
 	if x%1 ~= 0 then return warn("Make sure parameter 1 is an integer") end 
 	local strin = string.split(tostring(x),'')
 	local newt = {}
@@ -1651,7 +1650,7 @@ end
 -- Formatting
 
 function math2.toComma(x)
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
 	local neg = false
 	if x < 0 then x = math.abs(x) neg = true end
 	local nums = string.split(x,'')
@@ -1669,13 +1668,13 @@ function math2.toComma(x)
 end
 
 function math2.fromComma(x)
-	if type(x) ~= 'string' then return warn("Make sure parameter 1 is a string") end 
+	if _type(x) ~= 'string' then return warn("Make sure parameter 1 is a string") end 
 	local a = string.gsub(x,',','')
 	return a
 end
 
 function math2.toKMBT(x,NearestDecimal)
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
 	if x < 1000 and x > -1000 then return x end
 	local neg = false
 	if  x < 0 then
@@ -1691,7 +1690,7 @@ function math2.toKMBT(x,NearestDecimal)
 end
 
 function math2.fromKMBT(x)
-	if type(x) ~= 'string' then return warn("Make sure parameter 1 is a string") end 
+	if _type(x) ~= 'string' then return warn("Make sure parameter 1 is a string") end 
 	if tonumber(x) then return x end
 	local list = {'','K','M','B','T','Qa','Qi','Sx','Sp','Oc','No','Dc','Udc','Ddc','Tdc'}
 	local splits = string.split(x,'')
@@ -1702,8 +1701,8 @@ function math2.fromKMBT(x)
 end
 
 function math2.toScientific(x,Base)
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
-	if type(Base) ~= 'number' and Base ~= nil then return warn("Make sure parameter 2 is a number or nil") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(Base) ~= 'number' and Base ~= nil then return warn("Make sure parameter 2 is a number or nil") end 
 	local neg = false
 	if x < 0 then neg = true x = math.abs(x) end
 	if Base == nil then Base = 10 end
@@ -1714,14 +1713,14 @@ function math2.toScientific(x,Base)
 end
 
 function math2.fromScientific(x)
-	if type(x) ~= 'string' then return warn("Make sure parameter 1 is a string") end 
+	if _type(x) ~= 'string' then return warn("Make sure parameter 1 is a string") end 
 	local constant = tonumber(string.split(x,'*')[1])
 	local base = tonumber(string.split(string.split(x,'*')[2],'^')[1])
 	local power = tonumber(string.split(string.split(x,'*')[2],'^')[2])
 	return constant*base^power
 end
 function math2.toNumeral(x)
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
 	local numberMap = {
 		{1000, 'M'},
 		{900, 'CM'},
@@ -1753,7 +1752,7 @@ function math2.toNumeral(x)
 end
 
 function math2.fromNumeral(x)
-	if type(x) ~= 'string' then return warn("Make sure parameter 1 is a string") end 
+	if _type(x) ~= 'string' then return warn("Make sure parameter 1 is a string") end 
 	local decimal = 0
 	local num = 1
 	local numeralLength = string.len(x)
@@ -1790,14 +1789,14 @@ end
 
 function math2.toPercent(x,NearestDecimal)
 	if NearestDecimal == nil then NearestDecimal = 15 end
-	if type(x) ~= 'number' and type(NearestDecimal) ~= 'number' then return warn("Make sure parameter 1 and 2 are both numbers") end 
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
-	if type(NearestDecimal) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
+	if _type(x) ~= 'number' and _type(NearestDecimal) ~= 'number' then return warn("Make sure parameter 1 and 2 are both numbers") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(NearestDecimal) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
 	return math.round(x*100*10^NearestDecimal)/10^NearestDecimal
 end
 
 function math2.fromPercent(x)
-	if type(x) ~= 'string' then return warn("Make sure parameter 1 is a string") end 
+	if _type(x) ~= 'string' then return warn("Make sure parameter 1 is a string") end 
 	local n
 	local s = pcall(function()
 		n = string.split(x,'%')[1]
@@ -1808,9 +1807,9 @@ end
 
 function math2.toFraction(x,MixedToggle)
 	if MixedToggle == nil then MixedToggle = false end
-	if type(x) ~= 'number' and type(MixedToggle) ~= 'boolean' then return warn("Make sure parameter 1 is a number and parameter 2 is a boolean") end 
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
-	if type(MixedToggle) ~= 'boolean' then return warn("Make sure parameter 2 is a boolean") end 
+	if _type(x) ~= 'number' and _type(MixedToggle) ~= 'boolean' then return warn("Make sure parameter 1 is a number and parameter 2 is a boolean") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(MixedToggle) ~= 'boolean' then return warn("Make sure parameter 2 is a boolean") end 
 	local whole,number = math.modf(x)
 	local a,b,c,d,e,f = 0,1,1,1,nil,nil
 	local exact = false
@@ -1836,7 +1835,7 @@ function math2.toFraction(x,MixedToggle)
 end
 
 function math2.fromFraction(x)
-	if type(x) ~= 'string' then return warn("Make sure parameter 1 is a string") end 
+	if _type(x) ~= 'string' then return warn("Make sure parameter 1 is a string") end 
 	local mixed = false
 	local whole
 	local s = pcall(function()
@@ -1857,9 +1856,9 @@ end
 
 function math2.toTime(x,AMPMToggle)
 	if AMPMToggle == nil then AMPMToggle = false end
-	if type(x) ~= 'number' and type(AMPMToggle) ~= 'boolean' then return warn("Make sure parameter 1 is a number from 0-24 and parameter 2 is a boolean") end 
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number from 0-24") end 
-	if type(AMPMToggle) ~= 'boolean' then return warn("Make sure parameter 2 is a boolean") end 
+	if _type(x) ~= 'number' and _type(AMPMToggle) ~= 'boolean' then return warn("Make sure parameter 1 is a number from 0-24 and parameter 2 is a boolean") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number from 0-24") end 
+	if _type(AMPMToggle) ~= 'boolean' then return warn("Make sure parameter 2 is a boolean") end 
 	local hour = math.floor(x)
 	local leftover = x-hour
 	local minute = math.floor(leftover*60)
@@ -1879,7 +1878,7 @@ function math2.toTime(x,AMPMToggle)
 end
 
 function math2.fromTime(x)
-	if type(x) ~= 'string' then return warn("Make sure parameter 1 is a string") end 
+	if _type(x) ~= 'string' then return warn("Make sure parameter 1 is a string") end 
 	local am = string.find(x,'AM')
 	local pm = string.find(x,'PM')
 	local twoletter
@@ -1915,8 +1914,8 @@ end
 
 function math2.toBase(x,Base,CurrentBase)--Number,BaseToConvert,CurrentBase
 
-	if type(Base) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
-	if type(CurrentBase) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(Base) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(CurrentBase) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
 
 	x = string.upper(x)
 	local digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -1971,14 +1970,14 @@ end
 -- Algebra
 
 function math2.vertex(a,b,c)
-	if type(a) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
-	if type(b) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
-	if type(c) ~= 'number' then return warn("Make sure parameter 3 is a number") end 
+	if _type(a) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(b) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
+	if _type(c) ~= 'number' then return warn("Make sure parameter 3 is a number") end 
 	return -b/(2*a),-b^2/(4*a)+c
 end
 
 function math2.solver(f) -- can solve any function equal to 0
-	if type(f) ~= 'function' then return warn("Make sure parameter 1 is a function with 1 parameter") end 
+	if _type(f) ~= 'function' then return warn("Make sure parameter 1 is a function with 1 parameter") end 
 	local t = {}
 	local d = function(p,f1)
 		return(f1(p+1e-5)-f1(p))/1e-5
@@ -2029,15 +2028,15 @@ end
 -- Calculus
 
 function math2.derivative(x,Function)
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
-	if type(Function) ~= 'function' then return warn("Make sure parameter 2 is a function") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(Function) ~= 'function' then return warn("Make sure parameter 2 is a function") end 
 	return (Function(x+1e-12)-Function(x))/1e-12
 end
 
 function math2.integral(Lower,Upper,Function)
-	if type(Lower) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
-	if type(Upper) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
-	if type(Function) ~= 'function' then return warn("Make sure parameter 3 is a function") end 
+	if _type(Lower) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(Upper) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
+	if _type(Function) ~= 'function' then return warn("Make sure parameter 3 is a function") end 
 	local s = 0
 	local n = false
 	if Upper < 0 then
@@ -2051,8 +2050,8 @@ function math2.integral(Lower,Upper,Function)
 end
 
 function math2.limit(x,Function)
-	if type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
-	if type(Function) ~= 'function' then return warn("Make sure parameter 2 is a function") end 
+	if _type(x) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(Function) ~= 'function' then return warn("Make sure parameter 2 is a function") end 
 	return math.floor(Function(x+1e-13)*10^12)/10^12
 end
 
@@ -2062,9 +2061,9 @@ function math2.summation(Start,Finish,Function)
 			return x
 		end
 	end
-	if type(Start) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
-	if type(Finish) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
-	if type(Function) ~= 'function' then return warn("Make sure parameter 3 is a function") end 
+	if _type(Start) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(Finish) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
+	if _type(Function) ~= 'function' then return warn("Make sure parameter 3 is a function") end 
 	local sum = 0
 	for i=Start,Finish do
 		sum = sum+Function(i)
@@ -2073,9 +2072,9 @@ function math2.summation(Start,Finish,Function)
 end
 
 function math2.product(Start,Finish,Function)
-	if type(Start) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
-	if type(Finish) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
-	if type(Function) ~= 'function' then return warn("Make sure parameter 3 is a function") end 
+	if _type(Start) ~= 'number' then return warn("Make sure parameter 1 is a number") end 
+	if _type(Finish) ~= 'number' then return warn("Make sure parameter 2 is a number") end 
+	if _type(Function) ~= 'function' then return warn("Make sure parameter 3 is a function") end 
 	local sum = 0
 	for i=Start,Finish do
 		sum = sum*Function(i)
@@ -2223,19 +2222,19 @@ end
 
 -- // HookFunction Functions
 function HookFunction:Prefix(Callback)
-	assert(type(Callback) == "function", "Expected Argument #1 function")
+	assert(_type(Callback) == "function", "Expected Argument #1 function")
 
 	self._PrefixCallback = Callback
 end
 
 function HookFunction:Postfix(Callback)
-	assert(type(Callback) == "function", "Expected Argument #1 function")
+	assert(_type(Callback) == "function", "Expected Argument #1 function")
 
 	self._PostfixCallback = Callback
 end
 
 function HookFunction:Patch(Callback)
-	assert(type(Callback) == "function", "Expected Argument #1 function")
+	assert(_type(Callback) == "function", "Expected Argument #1 function")
 
 	self.Callback = Callback
 end
@@ -2560,7 +2559,7 @@ args._i = 1
 local valid_arg_types = {'string', 'number', 'boolean'}
 
 local function str_to_bool(s)
-	if type(s) ~= 'string' then
+	if _type(s) ~= 'string' then
 		return nil
 	end
 	if s == 'false' then
@@ -2599,13 +2598,13 @@ local function tbl_count(t)
 end
 
 function args:add_command(cmd_name, type_info, flags, nargs, required, help, default)
-	assert(type(cmd_name) == 'string')
-	assert(type(type_info) == 'string')
+	assert(_type(cmd_name) == 'string')
+	assert(_type(type_info) == 'string')
 	assert(tbl_contains_value(valid_arg_types, type_info), 'invalid argument type')
-	assert(type(nargs) == 'string' or type(nargs) == 'number')
-	assert(flags ~= nil and type(flags) == 'table', 'flags must be a valid table')
-	assert(type(required) == 'boolean')
-	assert(type(help) == 'string')
+	assert(_type(nargs) == 'string' or _type(nargs) == 'number')
+	assert(flags ~= nil and _type(flags) == 'table', 'flags must be a valid table')
+	assert(_type(required) == 'boolean')
+	assert(_type(help) == 'string')
 	local cmd = {
 		name = cmd_name,
 		type_info = type_info,
@@ -2649,7 +2648,7 @@ local function collect_cmd_args(cmd_flags, i, inputs, matching_cmd, cmds)
 	local min_required_nargs = 0
 	local max_nargs = 256
 	-- check matching_cmd.nargs
-	if type(matching_cmd.nargs) == 'string' then
+	if _type(matching_cmd.nargs) == 'string' then
 		if matching_cmd.nargs == '+' then
 			min_required_nargs = 1
 		elseif matching_cmd.nargs == '*' then
@@ -2657,7 +2656,7 @@ local function collect_cmd_args(cmd_flags, i, inputs, matching_cmd, cmds)
 		else
 			error(string.format('invalid nargs field: %q provided for %q', matching_cmd.nargs, matching_cmd.name))
 		end
-	elseif type(matching_cmd.nargs) == 'number' then
+	elseif _type(matching_cmd.nargs) == 'number' then
 		assert(
 			matching_cmd.nargs > -1,
 			string.format('invalid nargs value provided for command: %q. nargs must be a whole number', matching_cmd.name)
@@ -2688,7 +2687,7 @@ local function collect_cmd_args(cmd_flags, i, inputs, matching_cmd, cmds)
 	if num_args > 0 then
 		cmds[matching_cmd.name] = cmd_args
 	else
-		if type(matching_cmd.default) ~= matching_cmd.type_info then
+		if _type(matching_cmd.default) ~= matching_cmd.type_info then
 			error(
 				string.format(
 					'default argument %q type does not match the specified type: %q',
@@ -2705,7 +2704,7 @@ local function collect_cmd_args(cmd_flags, i, inputs, matching_cmd, cmds)
 end
 
 function args:parse(inputs)
-	assert(type(inputs) == 'table')
+	assert(_type(inputs) == 'table')
 	-- build a lookup table
 	-- flag -> argument_idx
 	local cmd_flags = {}
@@ -2743,7 +2742,7 @@ local err_idx_invalid = 'index invalid, must be an int'
 
 function array.__index(t, k)
 --	print('indexing table with key', k)
-	if type(k) == 'number' then
+	if _type(k) == 'number' then
 		assert(math.floor(k) == k, err_idx_invalid)
 		assert(0 < k and k <= t._len, err_idx_out_bounds)
 		return rawget(t, k)
