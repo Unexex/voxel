@@ -4,6 +4,63 @@
 -------------------------------------------------------------------------
 -- Functions
 
+local String = {}
+
+function String.startsWith(obj,lookingFor,caseSensitive)
+	if caseSensitive then
+		return tostring(obj):match("^"..lookingFor) and true or false
+	elseif not caseSensitive then
+		return tostring(obj:lower()):match("^"..lookingFor:lower()) and true or false
+	end
+end
+
+function String.endsWith(obj,lookingFor,caseSensitive)
+	if caseSensitive then
+		return tostring(obj):match(lookingFor.."$") and true or false
+	elseif not caseSensitive then
+		return tostring(obj:lower()):match(lookingFor:lower().."$") and true or false
+	end
+end
+
+function String.includes(obj,lookingFor,caseSensitive)
+	if caseSensitive then
+		return tostring(obj):find(lookingFor:lower()) and true or false
+	elseif not caseSensitive then
+		return tostring(obj:lower()):find(lookingFor:lower()) and true or false
+	end
+end
+
+
+function String.titleCase(obj,optExempt)
+	local exempt = {"and", "or", "of"}
+	local customExempt = optExempt:split(":")
+	for index,valueExempt in pairs(customExempt) do
+		table.insert(exempt,valueExempt:lower())
+	end
+	local sentence = {}
+	for word in obj:gmatch("%w+") do
+		if table.find(exempt,word:lower()) then
+			table.insert(sentence,word:lower())
+		end
+		local start, rest = word:sub(1,1), word:sub(2)
+		table.insert(sentence,start:upper()..rest:lower())
+	end
+	return table.concat(sentence, " ")
+end
+
+function String.reverseCase(obj)
+	local split = obj:split("")
+	local newObj = {}
+	for index,value in pairs(split) do
+		if value:match("%l") then
+			table.insert(newObj,value:upper())
+		elseif value:match("%u") then
+			table.insert(newObj,value:lower())
+		end
+	end
+	return table.concat(newObj,"")
+end
+
 local Table = {}
 Table.__index = Table
 
@@ -3504,8 +3561,11 @@ local dbs = {
 	read = io.read,
 	arguments = args,
 	array = array,
+	
+	-- a libraries
 	amath = math2,
 	atable = Table,
+	astring = String,
 
 	-- libraries
 	Color3 = colors,
