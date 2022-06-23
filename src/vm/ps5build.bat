@@ -1,4 +1,4 @@
-@rem Script to build LuaJIT with the PS5 SDK.
+@rem Script to build Voxel with the PS5 SDK.
 @rem Donated to the public domain.
 @rem
 @rem Open a "Visual Studio .NET Command Prompt" (64 bit host compiler)
