@@ -25,7 +25,7 @@
 @set LJLINK=link /nologo
 @set LJMT=mt /nologo
 @set DASMDIR=..\dynasm
-@set DASM=%DASMDIR%\dynasm.lua
+@set DASM=%DASMDIR%\dynasm.vox
 @set ALL_LIB=lib_base.c lib_math.c lib_bit.c lib_string.c lib_table.c lib_io.c lib_os.c lib_package.c lib_debug.c lib_jit.c lib_ffi.c lib_buffer.c
 @set GC64=
 @set DASC=vm_x64.dasc
@@ -68,7 +68,7 @@ buildvm -m libdef -o lj_libdef.h %ALL_LIB%
 @if errorlevel 1 goto :BAD
 buildvm -m recdef -o lj_recdef.h %ALL_LIB%
 @if errorlevel 1 goto :BAD
-buildvm -m vmdef -o jit\vmdef.lua %ALL_LIB%
+buildvm -m vmdef -o jit\vmdef.vox %ALL_LIB%
 @if errorlevel 1 goto :BAD
 buildvm -m folddef -o lj_folddef.h lj_opt_fold.c
 @if errorlevel 1 goto :BAD
