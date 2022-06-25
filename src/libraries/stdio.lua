@@ -3669,73 +3669,44 @@ local colors = {
 
 }
 
-local dbs = {
-	-- special
-	import = function() end,
-	alert = alert, 
-	typed = type,
+import = function() end,
+alert = alert, 
+typed = type,
 
 	-- switch terms
-	switch = switch,
-	case = case,
-	default = default,
+switch = switch,
+case = case,
+default = default,
 					
 	-- pro tools
-	wait = wait,
-	read = io.read,
-	arguments = args,
-	array = array,
+wait = wait,
+read = io.read,
+arguments = args,
+array = array,
 	
 	-- a libraries
-	amath = math2,
-	atable = Table,
-	astring = String,
+amath = math2,
+atable = Table,
+astring = String,
 
 	-- libraries
-	Color3 = colors,
-	Mutex = mutex,
-	Hook = HooksModule,
-	Promise = PromiseModule,
-	Signal = SignalModule,
-	Janitor = JanitorModule,
-	Librarian = {},
-}
-
-function dbs.Librarian:AddHighliter(name, content)
-	if dbs[name] then error("Attempt to modify an existing Highliter.") return end
-	dbs[name] = content
-end
-function dbs.Librarian:GetHighliters()
-	local dsxs = {}
-	for i, v in ipairs(dbs) do
-		dsxs[#dsxs+1] = i
-	end
-	return dsxs
-end			
+Color3 = colors,
+Mutex = mutex,
+Hook = HooksModule,
+Promise = PromiseModule,
+Signal = SignalModule,
+Janitor = JanitorModule,
+		
 
 function import(keyword)
 	local isWeb = keyword:split(1,1) == "@"
-	if isWeb then warn("Importing from the web is not supported with your Voxel version") return end
-	local x
-	pcall(function()
-		x = require("src/libraries/"..keyword)
-	end)
-	pcall(function()
-		x = require(keyword)
-	end)
+	if isWeb then warn("Importing from the web is not supported with your Voxel version") return else error("Unable to parse URL") return end
+		
 	local value = x or error(keyword.." was not found.")
 	if not value then return end
-
-
-	dbs.Librarian:AddHighliter(keyword, value) -- adds it so that you can run:
-	-- import "x" -- 
-	-- rather than --
-	-- local x = import "x" --
+	
+	return value
 end
 
-dbs.import = import
-
-
-return dbs
 
 -- @coolpro200021 ---
