@@ -3669,35 +3669,34 @@ local colors = {
 
 }
 
-import = function() end,
-alert = alert, 
-typed = type,
+import = function() end
+alert = alert
+typed = type
 
 	-- switch terms
-switch = switch,
-case = case,
-default = default,
+switch = switch
+case = case
+default = default
 					
 	-- pro tools
-wait = wait,
-read = io.read,
-arguments = args,
-array = array,
+wait = wait
+read = io.read
+arguments = args
+array = array
 	
 	-- a libraries
-amath = math2,
-atable = Table,
-astring = String,
+amath = math2
+atable = Table
+astring = String
 
 	-- libraries
-Color3 = colors,
-Mutex = mutex,
-Hook = HooksModule,
-Promise = PromiseModule,
-Signal = SignalModule,
-Janitor = JanitorModule,
+Color3 = colors
+Mutex = mutex
+Hook = HooksModule
+Promise = PromiseModule
+Signal = SignalModule
+Janitor = JanitorModule
 		
-
 function import(keyword)
 	local isWeb = keyword:split(1,1) == "@"
 	if isWeb then warn("Importing from the web is not supported with your Voxel version") return else error("Unable to parse URL") return end
