@@ -2,9 +2,493 @@
 	stdio.lua, automatically gets added to the script.
 ]]
 -------------------------------------------------------------------------
--- Functions
+local function isWindows()
+	return type(package) == 'table' and type(package.config) == 'string' and package.config:sub(1,1) == '\\'
+  end
+  
+  local supported = not isWindows()
+  if isWindows() then supported = os.getenv("ANSICON") end
+  
+  local keys = {
+	-- reset
+	reset =      0,
+  
+	-- misc
+	bright     = 1,
+	dim        = 2,
+	underline  = 4,
+	blink      = 5,
+	reverse    = 7,
+	hidden     = 8,
+  
+	-- foreground colors
+	black     = 30,
+	red       = 31,
+	green     = 32,
+	yellow    = 33,
+	blue      = 34,
+	magenta   = 35,
+	cyan      = 36,
+	white     = 37,
+  
+	-- background colors
+	blackbg   = 40,
+	redbg     = 41,
+	greenbg   = 42,
+	yellowbg  = 43,
+	bluebg    = 44,
+	magentabg = 45,
+	cyanbg    = 46,
+	whitebg   = 47
+  }
+  
+  local escapeString = string.char(27) .. '[%dm'
+  local function escapeNumber(number)
+	return escapeString:format(number)
+  end
+  
+  local function escapeKeys(str)
+  
+	if not supported then return "" end
+  
+	local buffer = {}
+	local number
+	for word in str:gmatch("%w+") do
+	  number = keys[word]
+	  assert(number, "Unknown key: " .. word)
+	  table.insert(buffer, escapeNumber(number) )
+	end
+  
+	return table.concat(buffer)
+  end
+  
+  local function replaceCodes(str)
+	str = string.gsub(str,"(%%{(.-)})", function(_, str) return escapeKeys(str) end )
+	return str
+  end
+  
+  -- public
+  
+  local function ansicolors( str )
+	str = tostring(str or '')
+  
+	return replaceCodes('%{reset}' .. str .. '%{reset}')
+  end
+  
+  
+ printc =  function(text)
+	local get = setmetatable({noReset = replaceCodes}, {__call = function (_, str) return ansicolors (str) end}) -- 
+	print(get(text))
+ end
 
-perlin = {}
+local flux = { _version = "0.1.5" }
+flux.__index = flux
+
+flux.tweens = {}
+flux.easing = { linear = function(p) return p end }
+
+local easing = {
+  quad    = "p * p",
+  cubic   = "p * p * p",
+  quart   = "p * p * p * p",
+  quint   = "p * p * p * p * p",
+  expo    = "2 ^ (10 * (p - 1))",
+  sine    = "-math.cos(p * (math.pi * .5)) + 1",
+  circ    = "-(math.sqrt(1 - (p * p)) - 1)",
+  back    = "p * p * (2.7 * p - 1.7)",
+  elastic = "-(2^(10 * (p - 1)) * math.sin((p - 1.075) * (math.pi * 2) / .3))"
+}
+
+local makefunc = function(str, expr)
+  local load = loadstring or load
+  return load("return function(p) " .. str:gsub("%$e", expr) .. " end")()
+end
+
+for k, v in pairs(easing) do
+  flux.easing[k .. "in"] = makefunc("return $e", v)
+  flux.easing[k .. "out"] = makefunc([[
+    p = 1 - p
+    return 1 - ($e)
+  ]], v)
+  flux.easing[k .. "inout"] = makefunc([[
+    p = p * 2
+    if p < 1 then
+      return .5 * ($e)
+    else
+      p = 2 - p
+      return .5 * (1 - ($e)) + .5
+    end
+  ]], v)
+end
+
+
+
+local tween = {}
+tween.__index = tween
+
+local function makefsetter(field)
+  return function(self, x)
+    local mt = getmetatable(x)
+    if type(x) ~= "function" and not (mt and mt.__call) then
+      error("expected function or callable", 2)
+    end
+    local old = self[field]
+    self[field] = old and function() old() x() end or x
+    return self
+  end
+end
+
+local function makesetter(field, checkfn, errmsg)
+  return function(self, x)
+    if checkfn and not checkfn(x) then
+      error(errmsg:gsub("%$x", tostring(x)), 2)
+    end
+    self[field] = x
+    return self
+  end
+end
+
+tween.ease  = makesetter("_ease",
+                         function(x) return flux.easing[x] end,
+                         "bad easing type '$x'")
+tween.delay = makesetter("_delay",
+                         function(x) return type(x) == "number" end,
+                         "bad delay time; expected number")
+tween.onstart     = makefsetter("_onstart")
+tween.onupdate    = makefsetter("_onupdate")
+tween.oncomplete  = makefsetter("_oncomplete")
+
+
+function tween.new(obj, time, vars)
+  local self = setmetatable({}, tween)
+  self.obj = obj
+  self.rate = time > 0 and 1 / time or 0
+  self.progress = time > 0 and 0 or 1
+  self._delay = 0
+  self._ease = "quadout"
+  self.vars = {}
+  for k, v in pairs(vars) do
+    if type(v) ~= "number" then
+      error("bad value for key '" .. k .. "'; expected number")
+    end
+    self.vars[k] = v
+  end
+  return self
+end
+
+
+function tween:init()
+  for k, v in pairs(self.vars) do
+    local x = self.obj[k]
+    if type(x) ~= "number" then
+      error("bad value on object key '" .. k .. "'; expected number")
+    end
+    self.vars[k] = { start = x, diff = v - x }
+  end
+  self.inited = true
+end
+
+
+function tween:after(...)
+  local t
+  if select("#", ...) == 2 then
+    t = tween.new(self.obj, ...)
+  else
+    t = tween.new(...)
+  end
+  t.parent = self.parent
+  self:oncomplete(function() flux.add(self.parent, t) end)
+  return t
+end
+
+
+function tween:stop()
+  flux.remove(self.parent, self)
+end
+
+
+
+function flux.group()
+  return setmetatable({}, flux)
+end
+
+
+function flux:to(obj, time, vars)
+  return flux.add(self, tween.new(obj, time, vars))
+end
+
+
+function flux:update(deltatime)
+  for i = #self, 1, -1 do
+    local t = self[i]
+    if t._delay > 0 then
+      t._delay = t._delay - deltatime
+    else
+      if not t.inited then
+        flux.clear(self, t.obj, t.vars)
+        t:init()
+      end
+      if t._onstart then
+        t._onstart()
+        t._onstart = nil
+      end
+      t.progress = t.progress + t.rate * deltatime
+      local p = t.progress
+      local x = p >= 1 and 1 or flux.easing[t._ease](p)
+      for k, v in pairs(t.vars) do
+        t.obj[k] = v.start + x * v.diff
+      end
+      if t._onupdate then t._onupdate() end
+      if p >= 1 then
+        flux.remove(self, i)
+        if t._oncomplete then t._oncomplete() end
+      end
+    end
+  end
+end
+
+
+function flux:clear(obj, vars)
+  for t in pairs(self[obj]) do
+    if t.inited then
+      for k in pairs(vars) do t.vars[k] = nil end
+    end
+  end
+end
+
+
+function flux:add(tween)
+  -- Add to object table, create table if it does not exist
+  local obj = tween.obj
+  self[obj] = self[obj] or {}
+  self[obj][tween] = true
+  -- Add to array
+  table.insert(self, tween)
+  tween.parent = self
+  return tween
+end
+
+
+function flux:remove(x)
+  if type(x) == "number" then
+    -- Remove from object table, destroy table if it is empty
+    local obj = self[x].obj
+    self[obj][self[x]] = nil
+    if not next(self[obj]) then self[obj] = nil end
+    -- Remove from array
+    self[x] = self[#self]
+    return table.remove(self)
+  end
+  for i, v in ipairs(self) do
+    if v == x then
+      return flux.remove(self, i)
+    end
+  end
+end
+
+
+
+local bound = {
+  to      = function(...) return flux.to(flux.tweens, ...) end,
+  update  = function(...) return flux.update(flux.tweens, ...) end,
+  remove  = function(...) return flux.remove(flux.tweens, ...) end,
+}
+setmetatable(bound, flux)
+-- Functions
+local middleclass = {
+	_VERSION     = 'middleclass v4.1.1',
+	_DESCRIPTION = 'Object Orientation for Lua',
+	_URL         = 'https://github.com/kikito/middleclass',
+	_LICENSE     = [[
+	  MIT LICENSE
+  
+	  Copyright (c) 2011 Enrique García Cota
+  
+	  Permission is hereby granted, free of charge, to any person obtaining a
+	  copy of this software and associated documentation files (the
+	  "Software"), to deal in the Software without restriction, including
+	  without limitation the rights to use, copy, modify, merge, publish,
+	  distribute, sublicense, and/or sell copies of the Software, and to
+	  permit persons to whom the Software is furnished to do so, subject to
+	  the following conditions:
+  
+	  The above copyright notice and this permission notice shall be included
+	  in all copies or substantial portions of the Software.
+  
+	  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+	  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+	  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+	  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+	  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+	  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+	  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+	]]
+  }
+  
+  local function _createIndexWrapper(aClass, f)
+	if f == nil then
+	  return aClass.__instanceDict
+	elseif type(f) == "function" then
+	  return function(self, name)
+		local value = aClass.__instanceDict[name]
+  
+		if value ~= nil then
+		  return value
+		else
+		  return (f(self, name))
+		end
+	  end
+	else -- if  type(f) == "table" then
+	  return function(self, name)
+		local value = aClass.__instanceDict[name]
+  
+		if value ~= nil then
+		  return value
+		else
+		  return f[name]
+		end
+	  end
+	end
+  end
+  
+  local function _propagateInstanceMethod(aClass, name, f)
+	f = name == "__index" and _createIndexWrapper(aClass, f) or f
+	aClass.__instanceDict[name] = f
+  
+	for subclass in pairs(aClass.subclasses) do
+	  if rawget(subclass.__declaredMethods, name) == nil then
+		_propagateInstanceMethod(subclass, name, f)
+	  end
+	end
+  end
+  
+  local function _declareInstanceMethod(aClass, name, f)
+	aClass.__declaredMethods[name] = f
+  
+	if f == nil and aClass.super then
+	  f = aClass.super.__instanceDict[name]
+	end
+  
+	_propagateInstanceMethod(aClass, name, f)
+  end
+  
+  local function _tostring(self) return "class " .. self.name end
+  local function _call(self, ...) return self:new(...) end
+  
+  local function _createClass(name, super)
+	local dict = {}
+	dict.__index = dict
+  
+	local aClass = { name = name, super = super, static = {},
+					 __instanceDict = dict, __declaredMethods = {},
+					 subclasses = setmetatable({}, {__mode='k'})  }
+  
+	if super then
+	  setmetatable(aClass.static, {
+		__index = function(_,k)
+		  local result = rawget(dict,k)
+		  if result == nil then
+			return super.static[k]
+		  end
+		  return result
+		end
+	  })
+	else
+	  setmetatable(aClass.static, { __index = function(_,k) return rawget(dict,k) end })
+	end
+  
+	setmetatable(aClass, { __index = aClass.static, __tostring = _tostring,
+						   __call = _call, __newindex = _declareInstanceMethod })
+  
+	return aClass
+  end
+  
+  local function _includeMixin(aClass, mixin)
+	assert(type(mixin) == 'table', "mixin must be a table")
+  
+	for name,method in pairs(mixin) do
+	  if name ~= "included" and name ~= "static" then aClass[name] = method end
+	end
+  
+	for name,method in pairs(mixin.static or {}) do
+	  aClass.static[name] = method
+	end
+  
+	if type(mixin.included)=="function" then mixin:included(aClass) end
+	return aClass
+  end
+  
+  local DefaultMixin = {
+	__tostring   = function(self) return "instance of " .. tostring(self.class) end,
+  
+	initialize   = function(self, ...) end,
+  
+	isInstanceOf = function(self, aClass)
+	  return type(aClass) == 'table'
+		 and type(self) == 'table'
+		 and (self.class == aClass
+			  or type(self.class) == 'table'
+			  and type(self.class.isSubclassOf) == 'function'
+			  and self.class:isSubclassOf(aClass))
+	end,
+  
+	static = {
+	  allocate = function(self)
+		assert(type(self) == 'table', "Make sure that you are using 'Class:allocate' instead of 'Class.allocate'")
+		return setmetatable({ class = self }, self.__instanceDict)
+	  end,
+  
+	  new = function(self, ...)
+		assert(type(self) == 'table', "Make sure that you are using 'Class:new' instead of 'Class.new'")
+		local instance = self:allocate()
+		instance:initialize(...)
+		return instance
+	  end,
+  
+	  subclass = function(self, name)
+		assert(type(self) == 'table', "Make sure that you are using 'Class:subclass' instead of 'Class.subclass'")
+		assert(type(name) == "string", "You must provide a name(string) for your class")
+  
+		local subclass = _createClass(name, self)
+  
+		for methodName, f in pairs(self.__instanceDict) do
+		  if not (methodName == "__index" and type(f) == "table") then
+			_propagateInstanceMethod(subclass, methodName, f)
+		  end
+		end
+		subclass.initialize = function(instance, ...) return self.initialize(instance, ...) end
+  
+		self.subclasses[subclass] = true
+		self:subclassed(subclass)
+  
+		return subclass
+	  end,
+  
+	  subclassed = function(self, other) end,
+  
+	  isSubclassOf = function(self, other)
+		return type(other)      == 'table' and
+			   type(self.super) == 'table' and
+			   ( self.super == other or self.super:isSubclassOf(other) )
+	  end,
+  
+	  include = function(self, ...)
+		assert(type(self) == 'table', "Make sure you that you are using 'Class:include' instead of 'Class.include'")
+		for _,mixin in ipairs({...}) do _includeMixin(self, mixin) end
+		return self
+	  end
+	}
+  }
+  
+  function middleclass.class(name, super)
+	assert(type(name) == 'string', "A name (string) is needed for the new class")
+	return super and super:subclass(name) or _includeMixin(_createClass(name), DefaultMixin)
+  end
+  
+  setmetatable(middleclass, { __call = function(_, ...) return middleclass.class(...) end })
+
+
+local perlin = {}
 perlin.p = {}
 
 -- Hash lookup table as defined by Ken Perlin
@@ -3683,12 +4167,13 @@ wait = wait
 read = io.read
 arguments = args
 array = array
-	
+class = middleclass
+
 	-- a libraries
 amath = math2
 atable = Table
 astring = String
-
+tween = flux
 	-- libraries
 Color3 = colors
 Mutex = mutex
