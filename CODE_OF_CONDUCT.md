@@ -1,4 +1,4 @@
-# Citizen Code of Conduct
+# Voxel Code of Conduct
 
 ## 1. Purpose
 
